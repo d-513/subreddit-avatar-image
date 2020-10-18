@@ -1,4 +1,11 @@
-const myPackage = require('./esm')
+const subAvatar = require('./esm')
 
-console.log(myPackage.hello())
-console.log(myPackage.hello('NPM'))
+async function main () {
+  const arr = ['linux_gaming', 'linux', 'dog', 'minecraft', 'bruuhsudasd']
+  const promises = []
+  arr.forEach((elem) => promises.push(subAvatar.getAvatar(elem)))
+  await Promise.all(promises)
+  console.log(promises)
+}
+
+main()
