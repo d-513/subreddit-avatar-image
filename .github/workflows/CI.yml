@@ -1,0 +1,61 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install --production=true
+      - run: yarn run test
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install git
+        run: |
+          sudo apt-get install -y git
+          git config --global user.email "octocat@github.com"
+          git config --global user.name "Octocat"
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install
+      - run: yarn run fix
+      - run: git add .
+      - run: "git commit -a -m \"Fix with standard\" || :"
+      - run: git push
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install git
+        run: |
+          sudo apt-get install -y git
+          git config --global user.email "octocat@github.com"
+          git config --global user.name "Octocat"
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install
+      - run: yarn run doc
+      - run: git add .
+      - run: "git commit -a -m \"Update JSDoc\" || :"
+      - run: git push
+  publish-npm:
+    needs: [test, fix]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: yarn install
+      - run: yarn publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}

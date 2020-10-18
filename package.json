@@ -1,0 +1,29 @@
+{
+  "name": "@dada513/package-template",
+  "version": "1.0.0",
+  "description": "your-description",
+  "main": "esm.js",
+  "repository": "https://github.com/dada513/package",
+  "author": "dada513",
+  "scripts": {
+    "doc": "jsdoc src -r -d docs README.md",
+    "lint": "standard",
+    "fix": "standard --fix",
+    "test": "node test.js"
+  },
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "esm": "^3.2.25"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.6",
+    "standard": "^14.3.4"
+  },
+  "standard": {
+    "ignore": [
+      "docs/**/*.js",
+      "esm.js"
+    ]
+  }
+}
